@@ -18,14 +18,14 @@ public class PrintSampleStream {
 	 * @param args[3] Access token secret
 	 */
     public static void main(String[] args) {
-        String accessToken = args[0];
-        String accessTokenSecret = args[1];
-        String consumerKey = args[2];
-        String consumerKeySecret = args[3];
+        String consumerKey = args[0];
+        String consumerKeySecret = args[1];
+        String accessToken = args[2];
+        String accessTokenSecret = args[3];
         
         TopologyBuilder builder = new TopologyBuilder();
         
-        builder.setSpout("spout", new TwitterSampleSpout(accessToken, accessTokenSecret, consumerKey, consumerKeySecret));
+        builder.setSpout("spout", new TwitterSampleSpout(consumerKey, consumerKeySecret, accessToken, accessTokenSecret));
         builder.setBolt("print", new PrinterBolt())
                 .shuffleGrouping("spout");
                 
