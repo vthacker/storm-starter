@@ -21,13 +21,17 @@ public class TwitterSampleSpout extends BaseRichSpout {
     SpoutOutputCollector _collector;
     LinkedBlockingQueue<Status> queue = null;
     TwitterStream _twitterStream;
-    String _username;
-    String _pwd;
+    String _accessToken;
+    String _accessTokenSecret;
+    String _consumerKey;
+    String _consumerKeySecret;
     
     
-    public TwitterSampleSpout(String username, String pwd) {
-        _username = username;
-        _pwd = pwd;
+    public TwitterSampleSpout(String accessToken, String accessTokenSecret, String consumerKey, String consumerKeySecret) {
+    	_accessToken = accessToken;
+    	_accessTokenSecret = accessTokenSecret;
+    	_consumerKey = consumerKey;
+    	_consumerKeySecret = consumerKeySecret;
     }
     
     @Override
@@ -58,7 +62,11 @@ public class TwitterSampleSpout extends BaseRichSpout {
             }
             
         };
-        TwitterStreamFactory fact = new TwitterStreamFactory(new ConfigurationBuilder().setUser(_username).setPassword(_pwd).build());
+        TwitterStreamFactory fact = new TwitterStreamFactory(new ConfigurationBuilder().
+        		setOAuthAccessToken(_accessToken).
+        		setOAuthAccessTokenSecret(_accessTokenSecret).
+        		setOAuthConsumerKey(_consumerKey).
+        		setOAuthConsumerSecret(_consumerKeySecret).build());
         _twitterStream = fact.getInstance();
         _twitterStream.addListener(listener);
         _twitterStream.sample();
